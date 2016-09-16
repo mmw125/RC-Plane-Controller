@@ -21,8 +21,6 @@ import java.util.regex.*;
 
 public class main extends PApplet {
 
-
-
 ControllIO controllIO;
 ControllDevice joypad;
 ControllStick stick2;
@@ -46,14 +44,15 @@ public void setup() {
     controllerConnected = true;
   }
   catch(Exception e) {
+    e.printStackTrace();
   }
 }
 
 
 public void draw() {
   thrust = thrust - 70;
-  myPort.write("1:"+leftAileron+":"+rightAileron+":"+elevator+":"+rudder+":"+thrust+":\n");
-  println("1:"+leftAileron+":"+rightAileron+":"+elevator+":"+rudder+":"+thrust+":\n");
+  myPort.write("1:" + leftAileron + ":" + rightAileron + ":" + elevator + ":" + rudder + ":" + thrust + ":\n");
+  println("1:" + leftAileron + ":" + rightAileron + ":" + elevator + ":" + rudder + ":" + thrust + ":\n");
   delay(20);
   strokeWeight(2);
   stroke(0xff7C7C7C);
@@ -67,10 +66,10 @@ public void draw() {
     //keyEvent();
   }
   if (controllerConnected) {
-    x = (int)stick2.getY();
-    y = (int)stick2.getX();
-    thrust = 90 - (int)stick1.getY();
-    rudder = 90 + (int)stick1.getX();
+    x = (int) stick2.getY();
+    y = (int) stick2.getX();
+    thrust = 90 - (int) stick1.getY();
+    rudder = 90 + (int) stick1.getX();
   }
   //head = roll;
   //Dividing Line
@@ -80,8 +79,7 @@ public void draw() {
   //pitch=roll;
   if (controllerConnected) {
     drawAxes();
-  } 
-  else {
+  } else {
     testMode();
   }
 }
@@ -89,22 +87,22 @@ public void draw() {
 public void drawAxes() {
   fill(255);
   stroke(0xff000000);
-  int tempX = x*300/90;
-  int tempY = y*300/90;
+  int tempX = x * 300 / 90;
+  int tempY = y * 300 / 90;
 
-  line(tempX+600, 300, tempX+600, height);
-  line(300, 600+tempY, width, 600+tempY);
+  line(tempX + 600, 300, tempX + 600, height);
+  line(300, 600 + tempY, width, 600 + tempY);
 
   textAlign(LEFT);
   textSize(20);
-  leftAileron = x+90;
-  rightAileron = 90-x;
-  elevator = 90+y;
-  text("Left Aileron "+leftAileron, 5, 320);
-  text("Right Aileron "+rightAileron, 5, 345);
-  text("Elevator "+elevator, 5, 370);
-  text("Rudder "+rudder, 5, 395);
-  text("Thrust "+thrust, 5, 420);
+  leftAileron = x + 90;
+  rightAileron = 90 - x;
+  elevator = 90 + y;
+  text("Left Aileron " + leftAileron, 5, 320);
+  text("Right Aileron " + rightAileron, 5, 345);
+  text("Elevator " + elevator, 5, 370);
+  text("Rudder " + rudder, 5, 395);
+  text("Thrust " + thrust, 5, 420);
 
   stroke(0xff424242);
   line(600, 300, 600, height);
@@ -113,20 +111,20 @@ public void drawAxes() {
   //Intersection Box
   fill(0xffC7C7C7);
   stroke(0xff424242);
-  rect(tempX-5+600, tempY+600-5, 10, 10);
+  rect(tempX - 5 + 600, tempY + 600 - 5, 10, 10);
 }
 
 public void drawSlider(float a, float b, float c, float d, float e, float f, float g) {
-  if (g<0) {
-    g=0;
+  if (g < 0) {
+    g = 0;
   }
-  if (g>d) {
-    g=d;
+  if (g > d) {
+    g = d;
   }
   stroke(0xffFFFFFF);
   fill(0xff424242);
   line(a, b, a, b+d+2*c);
-  rect(a-(.5f*e), b+c+d-g-(.5f*f), e, f);
+  rect(a - (.5f * e), b + c + d - g - (.5f * f), e, f);
 }
 
 public void drawOutputs() {
@@ -168,12 +166,6 @@ public void drawOutputs() {
 }
 
 public void drawOptions() {
-//  if(controllerConnected == false){
-//  fill(#C7C7C7);
-//  rect(25, 850, 100, 25);
-//  fill(#000000);
-//  text("TEST MODE", 75, 870);
-//  }
   if(connected){
     fill(0xff7C7C7C);
     rect(175, 850, 100, 25);
@@ -182,19 +174,11 @@ public void drawOptions() {
   }else{
     fill(0xff000000);
     rect(175, 850, 100, 25);
-  fill(0xffFFFFFF);
-  text("Not Connected", 225, 870);
+    fill(0xffFFFFFF);
+    text("Not Connected", 225, 870);
   }
 }
-/*
-void drawButtons(){
- stroke(#67E667);
- fill(#67A667);
- textAlign(CENTER);
- rect(25,305,100,30);
- rect(175,305,100,30);
- }
- */
+
 int v = 0;
 int x = 0;
 int y = 0;
@@ -208,63 +192,36 @@ int thrust = 0, thrustLast = 0, elevator = 90, elevatorLast = 0;
 boolean connected = false, ready = true, controllerConnected = false, axesSelected = true;
 String data = "";
 
-/*
-void mousePressed() {
- if (controllerConnected == false) {
- //if over the option button
- if (option==0 && mouseX > 5 && mouseX < 25 && mouseY > 305 && mouseY < 325) {
- option=1;
- }
- if (mouseY>300 && mouseX>300) {
- if (axesSelected) {
- axesSelected = false;
- }
- else if (axesSelected == false) {
- axesSelected = true;
- }
- }
- if (mouseY>850&&mouseY<875&&mouseX>25&&mouseX<125) {
- if (testMode) {
- testMode=false;
- }
- else if (testMode==false) {
- testMode=true;
- }
- }
- }
- }
- */
-
 public void mouseDragged() {
   if (controllerConnected == false) {
-    if (mouseY > (520-leftAileron) && mouseY < (600-leftAileron) && mouseX<500 && mouseX>400) {
-      leftAileron = leftAileron+(pmouseY-mouseY);
-      if (leftAileron>200) {
-        leftAileron=200;
+    if (mouseY > (520 - leftAileron) && mouseY < (600 - leftAileron) && mouseX < 500 && mouseX > 400) {
+      leftAileron = leftAileron + (pmouseY - mouseY);
+      if (leftAileron > 200) {
+        leftAileron = 200;
       }
-      else if (leftAileron<0) {
-        leftAileron=0;
-      }
-    }
-    else if (mouseY > (520-rightAileron) && mouseY < (600-rightAileron) && mouseX<650 && mouseX>550) {
-      rightAileron = rightAileron+(pmouseY-mouseY);
-      if (rightAileron>200) {
-        rightAileron=200;
-      }
-      else if (rightAileron<0) {
-        rightAileron=0;
+      else if (leftAileron < 0) {
+        leftAileron = 0;
       }
     }
-    else if (mouseY > (520-elevator) && mouseY < (600-elevator) && mouseX<800 && mouseX>700) {
+    else if (mouseY > (520 - rightAileron) && mouseY < (600 - rightAileron) && mouseX < 650 && mouseX > 550) {
+      rightAileron = rightAileron + (pmouseY - mouseY);
+      if (rightAileron > 200) {
+        rightAileron = 200;
+      }
+      else if (rightAileron < 0) {
+        rightAileron = 0;
+      }
+    }
+    else if (mouseY > (520 - elevator) && mouseY < (600 - elevator) && mouseX < 800 && mouseX > 700) {
       elevator = elevator+(pmouseY-mouseY);
       if (elevator>200) {
         elevator=200;
       }
-      else if (elevator<0) {
-        elevator=0;
+      else if (elevator < 0) {
+        elevator = 0;
       }
     }
-    else if (mouseY > (820-thrust) && mouseY < (900-thrust) && mouseX<800 && mouseX>700) {
+    else if (mouseY > (820-thrust) && mouseY < (900 - thrust) && mouseX < 800 && mouseX > 700) {
       thrust = thrust+(pmouseY-mouseY);
       if (thrust>200) {
         thrust=200;
@@ -274,17 +231,16 @@ public void mouseDragged() {
       }
     }
     else if (mouseY > (820-rudder) && mouseY < (900-rudder) && mouseX<500 && mouseX>400) {
-      rudder = rudder+(pmouseY-mouseY);
-      if (rudder>200) {
-        rudder=200;
+      rudder = rudder + (pmouseY - mouseY);
+      if (rudder > 200) {
+        rudder = 200;
       }
-      else if (rudder<0) {
-        rudder=0;
+      else if (rudder < 0) {
+        rudder = 0;
       }
     }
   }
 }
-
 
 public void serialEvent(Serial myPort) {
   connected = true;
@@ -307,15 +263,15 @@ public void testMode() {
   textAlign(CENTER);
   fill(0xffFFFFFF);
   text("Left Aileron", 450, 590);
-  text(leftAileron, 450, 555-leftAileron);
+  text(leftAileron, 450, 555 - leftAileron);
   text("Right Aileron", 600, 590);
-  text(rightAileron, 600, 555-rightAileron);
+  text(rightAileron, 600, 555 - rightAileron);
   text("Elevator", 750, 590);
-  text(elevator, 750, 555-elevator);
+  text(elevator, 750, 555 - elevator);
   text("Rudder", 450, 890);
-  text(rudder, 450, 855-rudder);
+  text(rudder, 450, 855 - rudder);
   text("Thrust", 750, 890);
-  text(thrust, 750, 855-thrust);
+  text(thrust, 750, 855 - thrust);
 }
 
   static public void main(String args[]) {
